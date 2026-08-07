@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valker Consulting — Soluciones Integrales México · USA</title>
+<link rel="icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#070f20;
+    --navy-900:#0d2140;
+    --navy-800:#132a52;
+    --navy-700:#1c3a6b;
+    --gold-500:#c9a24a;
+    --gold-400:#e2c37c;
+    --gold-300:#f0d99a;
+    --gold-100:#f3e6c6;
+    --cream:#faf8f3;
+    --paper:#ffffff;
+    --ink:#0d1b2e;
+    --ink-soft:#4a5468;
+    --line:#e4dfd2;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img,svg{display:block; max-width:100%;}
+  ::selection{background:var(--gold-400); color:var(--navy-950);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  .eyebrow{
+    font-family:'Inter';
+    font-size:11px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    font-weight:700;
+    color:var(--gold-500);
+  }
+
+  /* reveal on scroll */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* logo real sobre fondo oscuro: placa clara para contraste */
+  .logo-chip{
+    background:var(--cream);
+    border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    padding:6px 10px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,162,74,0.25);
+  }
+  .logo-chip img{display:block;}
+
+  /* ===== NAV ===== */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px clamp(20px,5vw,64px);
+    background:rgba(7,15,32,0.0);
+    transition:background .4s ease, padding .4s ease, box-shadow .4s ease;
+  }
+  .nav.scrolled{
+    background:rgba(7,15,32,0.88);
+    backdrop-filter:blur(14px);
+    padding:12px clamp(20px,5vw,64px);
+    box-shadow:0 8px 30px rgba(0,0,0,0.3), 0 1px 0 rgba(201,162,74,0.15);
+  }
+  .nav-logo{display:flex; align-items:center; gap:12px;}
+  .nav-logo .logo-chip img{height:36px; width:auto;}
+  .nav-word{
+    font-family:'Cormorant Garamond'; font-weight:600;
+    color:#fff; font-size:19px; letter-spacing:0.04em; line-height:1;
+  }
+  .nav-word span{display:block; font-family:'Inter'; font-size:8.5px; letter-spacing:0.32em; color:var(--gold-400); font-weight:600; margin-top:3px;}
+  .nav-links{display:flex; gap:36px; font-size:13px; letter-spacing:0.03em; color:#dfe4ee;}
+  .nav-links a{position:relative; padding-bottom:4px;}
+  .nav-links a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--gold-400);transition:width .3s ease;}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    border:1px solid var(--gold-400); color:var(--gold-100);
+    padding:9px 20px; font-size:12px; letter-spacing:0.05em; border-radius:3px;
+    transition:background .3s ease, color .3s ease, box-shadow .3s ease;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{background:var(--gold-400); color:var(--navy-950); box-shadow:0 6px 20px rgba(201,162,74,0.35);}
+
+  .nav-burger{
+    display:none; width:38px; height:38px; border-radius:8px; border:1px solid rgba(255,255,255,0.2);
+    background:rgba(255,255,255,0.04); align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+  }
+  .nav-burger span{ display:block; width:16px; height:1.5px; background:#fff; position:relative; transition:transform .25s ease, opacity .25s ease; }
+  .nav-burger span::before, .nav-burger span::after{ content:''; position:absolute; left:0; width:16px; height:1.5px; background:#fff; transition:transform .25s ease, top .25s ease; }
+  .nav-burger span::before{ top:-6px; }
+  .nav-burger span::after{ top:6px; }
+  .nav-burger.open span{ background:transparent; }
+  .nav-burger.open span::before{ top:0; transform:rotate(45deg); }
+  .nav-burger.open span::after{ top:0; transform:rotate(-45deg); }
+
+  .mobile-menu{
+    display:none; position:fixed; top:0; right:0; height:100vh; width:min(300px, 82vw); z-index:70;
+    background:rgba(7,15,32,0.98); backdrop-filter:blur(14px);
+    transform:translateX(100%); transition:transform .35s ease;
+    flex-direction:column; padding:100px 30px 40px; gap:6px;
+    border-left:1px solid rgba(255,255,255,0.08);
+  }
+  .mobile-menu.open{ transform:translateX(0); }
+  .mobile-menu a{
+    color:#fff; font-size:16px; padding:16px 4px; border-bottom:1px solid rgba(255,255,255,0.08);
+    letter-spacing:0.02em;
+  }
+  .mobile-menu .nav-cta{ display:inline-flex; justify-content:center; margin-top:20px; }
+  .menu-overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:65;
+    opacity:0; transition:opacity .3s ease;
+  }
+  .menu-overlay.open{ display:block; opacity:1; }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative; min-height:100vh; display:flex; align-items:center;
+    background:var(--navy-950); overflow:hidden;
+  }
+  .hero-noise{
+    position:absolute; inset:0; opacity:0.5; mix-blend-mode:overlay; pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  .blob{
+    position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none;
+  }
+  .blob-1{
+    width:520px; height:520px; top:-120px; right:-80px;
+    background:radial-gradient(circle, rgba(201,162,74,0.45), transparent 70%);
+    animation:floatA 16s ease-in-out infinite;
+  }
+  .blob-2{
+    width:420px; height:420px; bottom:-140px; left:10%;
+    background:radial-gradient(circle, rgba(28,58,107,0.6), transparent 70%);
+    animation:floatB 20s ease-in-out infinite;
+  }
+  .blob-3{
+    width:300px; height:300px; top:30%; right:20%;
+    background:radial-gradient(circle, rgba(226,195,124,0.25), transparent 70%);
+    animation:floatA 13s ease-in-out infinite reverse;
+  }
+  @keyframes floatA{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-40px,30px) scale(1.08);}
+  }
+  @keyframes floatB{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(30px,-40px) scale(1.05);}
+  }
+  .hero-gradient{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(7,15,32,0.2) 0%, rgba(7,15,32,0.75) 70%, var(--navy-950) 100%);
+  }
+  .hero-grid{
+    position:absolute; inset:0; opacity:0.35; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(201,162,74,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,162,74,0.08) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent 90%);
+  }
+
+  .hero-inner{
+    position:relative; z-index:2; width:100%; max-width:1280px; margin:0 auto;
+    padding:150px clamp(20px,6vw,72px) 110px; text-align:center;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .hero-mark{
+    display:flex; align-items:center; gap:16px; margin-bottom:38px;
+    opacity:0; animation:riseIn .9s ease forwards; animation-delay:.1s;
+  }
+  .hero-mark .logo-chip{padding:10px 14px;}
+  .hero-mark .logo-chip img{height:52px; width:auto;}
+  .hero-mark-text{font-family:'Cormorant Garamond'; font-weight:600; color:#fff; font-size:28px; letter-spacing:0.05em; line-height:1; text-align:left;}
+  .hero-mark-text span{display:block; font-family:'Inter'; font-size:10px; letter-spacing:0.36em; color:var(--gold-400); font-weight:600; margin-top:6px;}
+
+  .hero-eyebrow-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    border:1px solid rgba(226,195,124,0.35); background:rgba(226,195,124,0.06);
+    padding:8px 18px; border-radius:999px; margin-bottom:26px;
+    opacity:0; animation:riseIn .9s ease forwards; animation-delay:.2s;
+  }
+  .hero-eyebrow-badge .dot{width:6px; height:6px; border-radius:50%; background:var(--gold-400); box-shadow:0 0 10px var(--gold-400); animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+  .hero h1{
+    font-family:'Cormorant Garamond'; font-weight:600; color:#fff;
+    font-size:clamp(38px, 6.4vw, 76px); line-height:1.05; letter-spacing:0.005em;
+    max-width:920px;
+    opacity:0; animation:riseIn .9s ease forwards; animation-delay:.32s;
+  }
+  .hero h1 .shine{
+    font-style:normal; font-weight:800; display:block; margin:8px 0;
+    font-size:1.18em;
+    background:linear-gradient(100deg, var(--gold-300) 0%, var(--gold-500) 25%, #fff5d9 50%, var(--gold-500) 75%, var(--gold-300) 100%);
+    background-size:250% auto;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    animation:shine 5s linear infinite;
+  }
+  @keyframes shine{ to{ background-position:250% center; } }
+
+  .hero p{
+    margin-top:28px; color:#c6cede; font-size:17px; line-height:1.75; max-width:560px;
+    font-weight:400; opacity:0; animation:riseIn .9s ease forwards; animation-delay:.46s;
+  }
+  .hero-ctas{
+    margin-top:40px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center;
+    opacity:0; animation:riseIn .9s ease forwards; animation-delay:.58s;
+  }
+  .btn-primary{
+    background:linear-gradient(120deg, var(--gold-400), var(--gold-500));
+    color:var(--navy-950); padding:16px 32px; font-size:13px; font-weight:800;
+    letter-spacing:0.06em; text-transform:uppercase; border-radius:4px;
+    display:inline-flex; align-items:center; gap:10px;
+    transition:transform .25s ease, box-shadow .25s ease;
+    box-shadow:0 10px 30px rgba(201,162,74,0.25);
+  }
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 18px 40px rgba(201,162,74,0.4);}
+  .btn-ghost{
+    border:1px solid rgba(255,255,255,0.35); color:#fff; padding:16px 28px;
+    font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    border-radius:4px; transition:border-color .25s ease, background .25s ease;
+  }
+  .btn-ghost:hover{border-color:var(--gold-400); background:rgba(255,255,255,0.06);}
+
+  @keyframes riseIn{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
+
+  /* stat strip */
+  .stats{
+    position:relative; z-index:2;
+    max-width:920px; width:100%; margin:70px auto 0;
+    display:grid; grid-template-columns:repeat(4, 1fr);
+    border-top:1px solid rgba(255,255,255,0.12);
+    opacity:0; animation:riseIn 1s ease forwards; animation-delay:.75s;
+  }
+  .stat{ text-align:center; padding:28px 10px 0; }
+  .stat .num{
+    font-family:'Cormorant Garamond'; font-weight:700; font-size:clamp(26px,3vw,38px);
+    color:var(--gold-400);
+  }
+  .stat .lbl{ margin-top:6px; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#9fabc4; }
+
+  .scroll-cue{
+    position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:3;
+    display:flex; flex-direction:column; align-items:center; gap:8px; color:#9fabc4; font-size:10px; letter-spacing:0.2em; text-transform:uppercase;
+    opacity:0; animation:riseIn .9s ease forwards; animation-delay:1s;
+  }
+  .scroll-cue .chevron{width:9px; height:9px; border-right:1px solid var(--gold-400); border-bottom:1px solid var(--gold-400); transform:rotate(45deg); animation:bounce 1.8s infinite;}
+  @keyframes bounce{0%,100%{transform:rotate(45deg) translate(0,0);}50%{transform:rotate(45deg) translate(4px,4px);}}
+
+  /* ===== marquee ===== */
+  .marquee{
+    background:var(--navy-950); border-top:1px solid rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.08);
+    overflow:hidden; padding:16px 0;
+  }
+  .marquee-track{ display:flex; gap:60px; white-space:nowrap; animation:scrollLeft 26s linear infinite; width:max-content; }
+  .marquee-track span{
+    font-family:'Cormorant Garamond'; font-size:16px; letter-spacing:0.08em; color:#8493ae;
+    display:flex; align-items:center; gap:14px;
+  }
+  .marquee-track span em{ font-style:normal; color:var(--gold-400); }
+  .marquee-track .sep{ color:var(--gold-500); opacity:0.5; }
+  @keyframes scrollLeft{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ===== SERVICES ===== */
+  .services{ position:relative; background:var(--cream); padding:130px clamp(20px,6vw,72px) 100px; }
+  .services-head{ max-width:700px; margin:0 auto 76px; text-align:center; }
+  .services-head .eyebrow{display:block; margin-bottom:16px;}
+  .services-head h2{
+    font-family:'Cormorant Garamond'; font-weight:600; font-size:clamp(30px,3.6vw,48px);
+    color:var(--navy-950); line-height:1.2;
+  }
+  .services-head h2 strong{color:var(--gold-500); font-weight:700;}
+
+  .services-grid{
+    max-width:1240px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:28px;
+  }
+  .service-col{
+    background:var(--paper); border-radius:16px; padding:44px 32px 36px;
+    border:1px solid var(--line);
+    position:relative; overflow:hidden;
+    transition:transform .4s ease, box-shadow .4s ease, border-color .4s ease;
+  }
+  .service-col::before{
+    content:''; position:absolute; inset:0; opacity:0;
+    background:linear-gradient(150deg, rgba(201,162,74,0.08), transparent 60%);
+    transition:opacity .4s ease;
+  }
+  .service-col:hover{ transform:translateY(-10px); box-shadow:0 30px 60px rgba(13,27,46,0.14); border-color:var(--gold-500); }
+  .service-col:hover::before{ opacity:1; }
+  .service-col:hover .service-icon{ transform:scale(1.08) rotate(-4deg); background:var(--navy-950); }
+  .service-col:hover .service-icon svg{ stroke:var(--gold-400); }
+
+  .service-icon{
+    width:64px; height:64px; border-radius:16px;
+    border:1px solid var(--gold-500); background:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:26px; position:relative; z-index:1;
+    transition:transform .35s ease, background .35s ease;
+  }
+  .service-icon svg{width:28px; height:28px; stroke:var(--gold-500); transition:stroke .35s ease;}
+
+  .service-col h3{
+    position:relative; z-index:1;
+    font-family:'Inter'; font-weight:800; font-size:16.5px;
+    color:var(--navy-950); letter-spacing:0.01em; line-height:1.35;
+    text-transform:uppercase; margin-bottom:14px; min-height:44px;
+  }
+  .service-col p{ position:relative; z-index:1; color:var(--ink-soft); font-size:14px; line-height:1.65; margin-bottom:24px; }
+  .service-list{list-style:none; position:relative; z-index:1;}
+  .service-list li{
+    display:flex; align-items:flex-start; gap:10px;
+    font-size:13.5px; color:var(--ink); padding:7px 0;
+    border-top:1px solid var(--line);
+  }
+  .service-list li:first-child{border-top:none;}
+  .service-list svg{width:14px; height:14px; flex-shrink:0; margin-top:3px; stroke:var(--gold-500);}
+
+  /* ===== HISTORIAS ===== */
+  .historias{ position:relative; background:var(--navy-950); padding:130px clamp(20px,6vw,72px); overflow:hidden; }
+  .historias::before{
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 700px 500px at 85% 0%, rgba(201,162,74,0.12), transparent 60%);
+    pointer-events:none;
+  }
+  .historias-head{ position:relative; z-index:1; max-width:700px; margin:0 auto 60px; text-align:center; }
+  .historias-head h2{
+    font-family:'Cormorant Garamond'; font-weight:600; color:#fff; font-size:clamp(30px,3.6vw,48px); line-height:1.2;
+  }
+  .historias-head h2 strong{color:var(--gold-400); font-weight:700;}
+  .historias-head p{ margin-top:16px; color:#b9c2d8; font-size:15px; }
+
+  .historias-grid{
+    position:relative; z-index:1; max-width:1240px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:26px;
+  }
+  .story-card{
+    background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1);
+    border-radius:16px; overflow:hidden; display:flex; flex-direction:column;
+    transition:transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+  }
+  .story-card:hover{ transform:translateY(-8px); border-color:var(--gold-500); box-shadow:0 30px 60px rgba(0,0,0,0.4); }
+  .story-thumb{
+    width:100%; aspect-ratio:16/10; object-fit:cover; background:linear-gradient(135deg,#132a52,#0d2140);
+  }
+  .story-body{ padding:22px 22px 26px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .story-cat{
+    align-self:flex-start; font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--navy-950); background:var(--gold-400); padding:4px 10px; border-radius:999px; font-weight:700;
+  }
+  .story-body h3{ font-family:'Cormorant Garamond'; font-weight:700; font-size:20px; color:#fff; line-height:1.3; }
+  .story-body p{ color:#aab4c9; font-size:13.5px; line-height:1.6; flex:1; }
+  .story-date{ font-size:11px; color:#6c7896; letter-spacing:0.05em; }
+
+  .historias-empty{
+    position:relative; z-index:1; grid-column:1/-1;
+    text-align:center; padding:60px 20px; color:#8493ae;
+    border:1px dashed rgba(255,255,255,0.15); border-radius:16px;
+  }
+  .historias-empty svg{ width:34px; height:34px; stroke:var(--gold-500); margin:0 auto 14px; }
+
+  /* ===== USA STRIP ===== */
+  .usa-strip{ position:relative; background:var(--cream); padding:100px clamp(20px,6vw,72px); overflow:hidden; color:var(--ink); border-top:1px solid var(--line); }
+  .usa-inner{
+    position:relative; z-index:1; max-width:1240px; margin:0 auto;
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:60px; align-items:center;
+  }
+  .usa-flag{width:44px; height:auto; margin-bottom:24px; border-radius:2px; box-shadow:0 4px 14px rgba(0,0,0,0.15);}
+  .usa-inner h2{ font-family:'Cormorant Garamond'; font-weight:600; font-size:clamp(28px,3.4vw,42px); line-height:1.25; color:var(--navy-950); }
+  .usa-inner h2 strong{color:var(--gold-500); font-weight:700;}
+  .usa-inner > div:first-child p{margin-top:20px; color:var(--ink-soft); font-size:15px; line-height:1.75; max-width:440px;}
+
+  .usa-grid{display:grid; grid-template-columns:1fr 1fr; gap:0;}
+  .usa-item{
+    display:flex; align-items:center; gap:12px;
+    padding:16px 4px; border-bottom:1px solid var(--line);
+    font-size:14px; color:var(--ink); transition:padding-left .3s ease, color .3s ease;
+  }
+  .usa-item:hover{ padding-left:10px; color:var(--gold-500); }
+  .usa-item svg{width:15px; height:15px; stroke:var(--gold-500); flex-shrink:0;}
+
+  /* ===== CTA / FOOTER ===== */
+  .cta-bar{
+    position:relative; overflow:hidden;
+    background:linear-gradient(120deg, var(--gold-400), var(--gold-500) 60%, #b8902f);
+    padding:60px clamp(20px,6vw,72px);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px;
+  }
+  .cta-bar::after{
+    content:''; position:absolute; width:300px; height:300px; border-radius:50%;
+    background:rgba(255,255,255,0.15); top:-150px; right:10%; filter:blur(10px);
+  }
+  .cta-bar h3{
+    position:relative; z-index:1;
+    font-family:'Cormorant Garamond'; font-weight:700; font-size:clamp(23px,2.8vw,32px);
+    color:var(--navy-950); max-width:520px; line-height:1.3;
+  }
+  .cta-bar .btn-primary{ position:relative; z-index:1; background:var(--navy-950); color:#fff; box-shadow:0 10px 30px rgba(7,15,32,0.35);}
+  .cta-bar .btn-primary:hover{ background:var(--navy-800); box-shadow:0 18px 40px rgba(7,15,32,0.45);}
+
+  footer{
+    background:var(--navy-950); color:#9aa5bd;
+    padding:34px clamp(20px,6vw,72px);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px;
+    font-size:13px; border-top:1px solid rgba(255,255,255,0.08);
+  }
+  .footer-logo{display:flex; align-items:center; gap:12px;}
+  .footer-logo .logo-chip img{height:30px; width:auto;}
+  .footer-logo-text{font-family:'Cormorant Garamond'; color:#fff; font-size:16px; letter-spacing:0.04em;}
+  .footer-links{display:flex; gap:28px; flex-wrap:wrap;}
+  .footer-links a:hover{color:var(--gold-400);}
+
+  /* ===== AGENDA / CALENDARIO ===== */
+  .agenda{ position:relative; background:var(--cream); padding:120px clamp(20px,6vw,72px); overflow:hidden; }
+  .agenda::before{
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 600px 500px at 10% 10%, rgba(201,162,74,0.1), transparent 60%);
+    pointer-events:none;
+  }
+  .agenda-inner{
+    position:relative; z-index:1; max-width:1100px; margin:0 auto;
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:0;
+    background:var(--navy-950); border-radius:22px; overflow:hidden;
+    box-shadow:0 40px 80px rgba(13,27,46,0.25);
+  }
+  .agenda-side{
+    padding:52px 44px; color:#fff; position:relative; overflow:hidden;
+    background:linear-gradient(160deg, var(--navy-950), var(--navy-800));
+  }
+  .agenda-side::after{
+    content:''; position:absolute; width:260px; height:260px; border-radius:50%;
+    background:radial-gradient(circle, rgba(201,162,74,0.35), transparent 70%);
+    bottom:-100px; right:-80px; filter:blur(10px);
+  }
+  .agenda-side .eyebrow{ color:var(--gold-400); }
+  .agenda-side h2{
+    font-family:'Cormorant Garamond'; font-weight:600; font-size:clamp(26px,2.6vw,34px);
+    margin-top:14px; line-height:1.25; position:relative; z-index:1;
+  }
+  .agenda-side h2 strong{ color:var(--gold-400); font-weight:700; }
+  .agenda-side p{ margin-top:16px; color:#b9c2d8; font-size:14.5px; line-height:1.7; position:relative; z-index:1; max-width:340px; }
+  .agenda-points{ margin-top:28px; display:flex; flex-direction:column; gap:14px; position:relative; z-index:1; }
+  .agenda-point{ display:flex; align-items:center; gap:12px; font-size:13.5px; color:#dfe4ee; }
+  .agenda-point svg{ width:16px; height:16px; stroke:var(--gold-400); flex-shrink:0; }
+
+  .agenda-form{ background:#fff; padding:48px 44px; }
+  .agenda-form h3{ font-family:'Cormorant Garamond'; font-weight:700; font-size:22px; margin-bottom:22px; color:var(--navy-950); }
+  .af-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .af-field{ margin-bottom:16px; }
+  .af-field label{ display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft); margin-bottom:6px; }
+  .af-field input, .af-field select, .af-field textarea{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-family:inherit; outline:none;
+    transition:border-color .2s ease; background:var(--cream);
+  }
+  .af-field input:focus, .af-field select:focus, .af-field textarea:focus{ border-color:var(--gold-500); background:#fff; }
+  .af-field textarea{ resize:vertical; min-height:64px; }
+
+  .slot-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-top:4px; }
+  .slot-btn{
+    padding:10px 6px; border-radius:8px; border:1px solid var(--line); background:var(--cream);
+    font-size:12.5px; font-weight:600; cursor:pointer; text-align:center; transition:all .2s ease; color:var(--ink);
+  }
+  .slot-btn:hover{ border-color:var(--gold-500); }
+  .slot-btn.selected{ background:var(--navy-950); border-color:var(--navy-950); color:#fff; }
+  .slot-btn.taken{ opacity:0.35; text-decoration:line-through; cursor:not-allowed; pointer-events:none; }
+  .slot-hint{ font-size:11.5px; color:var(--ink-soft); margin-top:8px; }
+
+  .af-submit{
+    width:100%; margin-top:6px; padding:14px 16px; border:none; border-radius:8px; cursor:pointer;
+    background:linear-gradient(120deg, var(--gold-400), var(--gold-500)); color:var(--navy-950);
+    font-weight:800; letter-spacing:0.03em; font-size:13px; text-transform:uppercase;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .af-submit:hover{ transform:translateY(-2px); box-shadow:0 14px 30px rgba(201,162,74,0.3); }
+  .af-submit:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
+  .af-msg{ font-size:13px; margin-top:12px; min-height:18px; }
+  .af-msg.error{ color:#c0483f; }
+  .af-msg.success{
+    color:#1c6b3a; background:#eaf7ee; border:1px solid #bfe6cc; padding:12px 14px; border-radius:8px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .af-msg.success a{ color:#1c6b3a; text-decoration:underline; font-weight:600; }
+
+  /* ===== FLOATING SOCIAL BUTTONS ===== */
+  .float-stack{
+    position:fixed; right:20px; bottom:22px; z-index:80;
+    display:flex; flex-direction:column-reverse; gap:12px; align-items:flex-end;
+  }
+  .float-btn{
+    width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px rgba(0,0,0,0.25); position:relative; transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .float-btn:hover{ transform:translateY(-3px) scale(1.05); box-shadow:0 16px 32px rgba(0,0,0,0.32); }
+  .float-btn svg{ width:24px; height:24px; }
+  .float-btn.wa{ background:#25D366; }
+  .float-btn.fb{ background:#1877F2; }
+  .float-btn.ig{ background:radial-gradient(circle at 30% 110%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+  .float-tooltip{
+    position:absolute; right:64px; top:50%; transform:translateY(-50%) translateX(6px);
+    background:var(--navy-950); color:#fff; font-size:12px; font-weight:600; letter-spacing:0.02em;
+    padding:7px 12px; border-radius:6px; white-space:nowrap;
+    opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
+  }
+  .float-btn:hover .float-tooltip{ opacity:1; transform:translateY(-50%) translateX(0); }
+  .float-btn.wa-pulse::before{
+    content:''; position:absolute; inset:0; border-radius:50%; background:#25D366;
+    animation:waPulse 2.4s ease-out infinite;
+  }
+  @keyframes waPulse{
+    0%{ transform:scale(1); opacity:0.55; }
+    100%{ transform:scale(1.9); opacity:0; }
+  }
+
+  @media (max-width:640px){
+    .float-stack{ right:14px; bottom:16px; gap:10px; }
+    .float-btn{ width:46px; height:46px; }
+    .float-btn svg{ width:21px; height:21px; }
+    .float-tooltip{ display:none; }
+  }
+
+  /* ===== RESPONSIVE ===== */
+
+  /* tablets */
+  @media (max-width:980px){
+    .nav-links{display:none;}
+    .nav > .nav-cta{display:none;}
+    .nav-burger{display:flex;}
+    .stats{grid-template-columns:repeat(2,1fr); gap:26px 0;}
+    .services-grid{grid-template-columns:1fr; max-width:520px;}
+    .historias-grid{grid-template-columns:1fr; max-width:520px;}
+    .usa-inner{grid-template-columns:1fr; gap:44px;}
+    .usa-grid{grid-template-columns:1fr;}
+    .cta-bar{flex-direction:column; align-items:flex-start;}
+  }
+
+  /* phones */
+  @media (max-width:640px){
+    body{ font-size:15px; }
+    .nav{ padding:14px 18px; }
+    .nav.scrolled{ padding:12px 18px; }
+    .nav-logo .logo-chip img{ height:28px; }
+    .nav-word{ font-size:15px; }
+    .nav-word span{ font-size:7px; letter-spacing:0.24em; }
+
+    .hero{ min-height:100svh; }
+    .hero-inner{ padding:110px 18px 70px; }
+    .hero-mark{ margin-bottom:26px; gap:10px; }
+    .hero-mark .logo-chip{ padding:7px 10px; }
+    .hero-mark .logo-chip img{ height:38px; }
+    .hero-mark-text{ font-size:20px; }
+    .hero-mark-text span{ font-size:8px; letter-spacing:0.28em; margin-top:4px; }
+    .hero-eyebrow-badge{ padding:7px 14px; margin-bottom:20px; }
+    .hero-eyebrow-badge .eyebrow{ font-size:9.5px; letter-spacing:0.18em; }
+    .hero h1{ font-size:clamp(28px, 8vw, 36px); line-height:1.15; }
+    .hero p{ font-size:15px; margin-top:20px; }
+    .hero-ctas{ margin-top:30px; width:100%; flex-direction:column; }
+    .hero-ctas a{ width:100%; justify-content:center; }
+    .btn-primary, .btn-ghost{ padding:15px 20px; }
+
+    .stats{ grid-template-columns:repeat(2,1fr); gap:22px 14px; margin-top:46px; }
+    .stat{ padding:20px 4px 0; }
+    .stat .num{ font-size:26px; }
+    .stat .lbl{ font-size:9.5px; }
+    .scroll-cue{ display:none; }
+
+    .marquee{ padding:12px 0; }
+    .marquee-track{ gap:34px; }
+    .marquee-track span{ font-size:13px; }
+
+    .services{ padding:80px 18px 60px; }
+    .services-head{ margin-bottom:44px; }
+    .services-head h2{ font-size:clamp(24px,7vw,30px); }
+    .service-col{ padding:34px 22px 28px; border-radius:14px; }
+    .service-col h3{ font-size:15px; min-height:auto; }
+
+    .historias{ padding:80px 18px; }
+    .historias-head{ margin-bottom:40px; }
+    .historias-head h2{ font-size:clamp(24px,7vw,30px); }
+    .story-body{ padding:18px 18px 20px; }
+
+    .usa-strip{ padding:70px 18px; }
+    .usa-inner{ gap:36px; }
+    .usa-inner h2{ font-size:clamp(24px,7vw,30px); }
+    .usa-item{ font-size:13.5px; padding:14px 2px; }
+
+    .cta-bar{ padding:44px 18px; gap:20px; }
+    .cta-bar h3{ font-size:clamp(20px,6vw,24px); }
+    .cta-bar .btn-primary{ width:100%; justify-content:center; }
+
+    .agenda{ padding:70px 18px; }
+    .agenda-inner{ grid-template-columns:1fr; border-radius:16px; }
+    .agenda-side{ padding:36px 24px; }
+    .agenda-side p{ max-width:none; }
+    .agenda-form{ padding:32px 22px 36px; }
+    .af-row{ grid-template-columns:1fr; }
+    .slot-grid{ grid-template-columns:repeat(2, 1fr); }
+
+    footer{ padding:30px 18px; flex-direction:column; align-items:flex-start; gap:18px; }
+    .footer-links{ gap:16px 20px; font-size:12.5px; }
+  }
+
+  /* very small phones */
+  @media (max-width:380px){
+    .stats{ grid-template-columns:1fr 1fr; gap:18px 10px; }
+    .hero h1{ font-size:26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">
+    <div class="logo-chip"><img src="/logo.png" alt="Valker Consulting"></div>
+    <div class="nav-word">VALKER<span>CONSULTING</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#servicios">Servicios</a>
+    <a href="#historias">Historias</a>
+    <a href="#usa">Softlanding USA</a>
+    <a href="#agenda">Agenda</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <a href="#agenda" class="nav-cta">Agenda una llamada</a>
+  <button class="nav-burger" id="navBurger" aria-label="Abrir menú"><span></span></button>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#servicios">Servicios</a>
+  <a href="#historias">Historias</a>
+  <a href="#usa">Softlanding USA</a>
+  <a href="#agenda">Agenda</a>
+  <a href="#contacto">Contacto</a>
+  <a href="#agenda" class="nav-cta">Agenda una llamada</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-gradient"></div>
+
+  <div class="hero-inner">
+    <div class="hero-mark">
+      <div class="logo-chip"><img src="/logo.png" alt="Valker Consulting"></div>
+      <div class="hero-mark-text">VALKER<span>CONSULTING</span></div>
+    </div>
+
+    <div class="hero-eyebrow-badge">
+      <span class="dot"></span>
+      <span class="eyebrow" style="color:var(--gold-300)">Consultoría · Infraestructura · Expansión internacional</span>
+    </div>
+
+    <h1>Impulsamos empresas con soluciones<span class="shine">Integrales</span>para crecer en México y Estados&nbsp;Unidos</h1>
+
+    <p>Acompañamos a directivos y fundadores en cada etapa: desde fortalecer la imagen de marca hasta construir la infraestructura tecnológica y legal para operar sin fronteras.</p>
+
+    <div class="hero-ctas">
+      <a href="#contacto" class="btn-primary">
+        Hablar con un consultor
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#historias" class="btn-ghost">Ver historias</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="num" data-count="120">0</div><div class="lbl">Empresas atendidas</div></div>
+      <div class="stat"><div class="num" data-count="35">0</div><div class="lbl">Softlandings en USA</div></div>
+      <div class="stat"><div class="num" data-count="8">0</div><div class="lbl">Años de experiencia</div></div>
+      <div class="stat"><div class="num" data-count="100" data-suffix="%">0</div><div class="lbl">Acompañamiento integral</div></div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">Desliza<span class="chevron"></span></div>
+</header>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee">
+  <div class="marquee-track" id="marqueeTrack">
+    <span>Branding Corporativo <em>·</em></span>
+    <span class="sep">✦</span>
+    <span>Infraestructura de TI <em>·</em></span>
+    <span class="sep">✦</span>
+    <span>Softlanding en USA <em>·</em></span>
+    <span class="sep">✦</span>
+    <span>Constitución de Empresas <em>·</em></span>
+    <span class="sep">✦</span>
+    <span>Consultoría Estratégica <em>·</em></span>
+    <span class="sep">✦</span>
+  </div>
+</div>
+
+<!-- ===== SERVICIOS ===== -->
+<section class="services" id="servicios">
+  <div class="services-head reveal">
+    <span class="eyebrow">Tres frentes, un mismo objetivo</span>
+    <h2>Todo lo que tu empresa necesita para <strong>verse, operar y expandirse</strong> con solidez.</h2>
+  </div>
+
+  <div class="services-grid">
+
+    <div class="service-col reveal">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      </div>
+      <h3>Branding corporativo<br>y publicidad</h3>
+      <p>Diseñamos y fabricamos soluciones visuales para fortalecer la imagen de tu empresa.</p>
+      <ul class="service-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Vinilos corporativos</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Letreros luminosos</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Señalética personalizada</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Posters y gran formato</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Acrílicos premium</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Displays e imagen corporativa</li>
+      </ul>
+    </div>
+
+    <div class="service-col reveal">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg>
+      </div>
+      <h3>Soluciones de<br>infraestructura de TI</h3>
+      <p>Creamos ambientes tecnológicos confiables para que tu negocio opere sin interrupciones.</p>
+      <ul class="service-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Redes empresariales</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cableado estructurado</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Telecomunicaciones</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>CCTV y control de acceso</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>WiFi empresarial</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Servidores y soporte TI</li>
+      </ul>
+    </div>
+
+    <div class="service-col reveal">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3>Softlanding empresarial<br>en USA</h3>
+      <p>Lleva tu empresa al mercado americano de forma segura y con acompañamiento experto.</p>
+      <ul class="service-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Constitución de empresas</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Direcciones fiscales</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cuentas bancarias y contabilidad</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Real estate</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Consultoría estratégica</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Acompañamiento integral</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== HISTORIAS ===== -->
+<section class="historias" id="historias">
+  <div class="historias-head reveal">
+    <span class="eyebrow" style="color:var(--gold-400)">Directo del CEO</span>
+    <h2>Historias y <strong>casos reales</strong> de lo que estamos construyendo.</h2>
+    <p>Actualizaciones, aprendizajes y casos de éxito compartidos por Valker Consulting.</p>
+  </div>
+
+  <div class="historias-grid reveal" id="historiasGrid">
+    <!-- se llena vía JS desde /api/stories -->
+  </div>
+</section>
+
+<!-- ===== USA STRIP ===== -->
+<section class="usa-strip" id="usa">
+  <div class="usa-inner">
+    <div class="reveal">
+      <svg class="usa-flag" viewBox="0 0 60 32" xmlns="http://www.w3.org/2000/svg">
+        <rect width="60" height="32" fill="#B22234"/>
+        <g fill="#fff">
+          <rect y="2.46" width="60" height="2.46"/><rect y="7.38" width="60" height="2.46"/>
+          <rect y="12.3" width="60" height="2.46"/><rect y="17.2" width="60" height="2.46"/>
+          <rect y="22.15" width="60" height="2.46"/><rect y="27.07" width="60" height="2.46"/>
+        </g>
+        <rect width="26" height="17.2" fill="#3C3B6E"/>
+      </svg>
+      <h2>De México a <strong>Estados Unidos</strong>, sin perder el control de tu negocio.</h2>
+      <p>Construimos el camino legal, fiscal y operativo para que tu expansión sea segura desde el primer paso.</p>
+    </div>
+    <div class="usa-grid reveal">
+      <div class="usa-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Constitución de empresas</div>
+      <div class="usa-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Direcciones fiscales</div>
+      <div class="usa-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cuentas bancarias</div>
+      <div class="usa-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Contabilidad</div>
+      <div class="usa-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Real estate</div>
+      <div class="usa-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Consultoría estratégica</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AGENDA / CALENDARIO ===== -->
+<section class="agenda" id="agenda">
+  <div class="agenda-inner reveal">
+    <div class="agenda-side">
+      <span class="eyebrow">Reserva tu espacio</span>
+      <h2>Agenda una <strong>llamada de diagnóstico</strong> con Valker Consulting.</h2>
+      <p>Elige el día y horario que mejor te acomode. Te confirmaremos por correo o WhatsApp antes de la sesión.</p>
+      <div class="agenda-points">
+        <div class="agenda-point"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Sesiones de 30 minutos</div>
+        <div class="agenda-point"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Lunes a viernes</div>
+        <div class="agenda-point"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z"/></svg>Videollamada o telefónica</div>
+      </div>
+    </div>
+
+    <div class="agenda-form">
+      <h3>Elige fecha y horario</h3>
+      <form id="appointmentForm">
+        <div class="af-row">
+          <div class="af-field">
+            <label>Nombre completo</label>
+            <input type="text" id="apName" required>
+          </div>
+          <div class="af-field">
+            <label>Correo electrónico</label>
+            <input type="email" id="apEmail" required>
+          </div>
+        </div>
+        <div class="af-row">
+          <div class="af-field">
+            <label>Teléfono / WhatsApp</label>
+            <input type="tel" id="apPhone" placeholder="+52 ...">
+          </div>
+          <div class="af-field">
+            <label>Servicio de interés</label>
+            <select id="apService">
+              <option>Consulta general</option>
+              <option>Branding corporativo y publicidad</option>
+              <option>Infraestructura de TI</option>
+              <option>Softlanding empresarial en USA</option>
+            </select>
+          </div>
+        </div>
+        <div class="af-field">
+          <label>Fecha</label>
+          <input type="date" id="apDate" required>
+        </div>
+        <div class="af-field">
+          <label>Horario disponible</label>
+          <div class="slot-grid" id="slotGrid">
+            <!-- generado por JS -->
+          </div>
+          <div class="slot-hint" id="slotHint">Selecciona una fecha para ver horarios disponibles.</div>
+          <input type="hidden" id="apTime" required>
+        </div>
+        <div class="af-field">
+          <label>Mensaje (opcional)</label>
+          <textarea id="apMessage" placeholder="Cuéntanos brevemente qué necesitas..."></textarea>
+        </div>
+        <button type="submit" class="af-submit" id="apSubmit">Confirmar cita</button>
+        <div class="af-msg" id="apMsg"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-bar" id="contacto">
+  <h3>Construimos el camino para la expansión de tu negocio.</h3>
+  <a href="https://wa.me/522223581636" class="btn-primary" target="_blank" rel="noopener">
+    +52 222 358 1636
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </a>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">
+    <div class="logo-chip"><img src="/logo.png" alt="Valker Consulting"></div>
+    <div class="footer-logo-text">Valker Consulting</div>
+  </div>
+  <div class="footer-links">
+    <a href="#servicios">Servicios</a>
+    <a href="#historias">Historias</a>
+    <a href="https://www.valker-usa.com" target="_blank" rel="noopener">www.valker-usa.com</a>
+    <a href="https://wa.me/522223581636" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="/admin" style="opacity:0.55">Admin</a>
+  </div>
+  <div>© 2026 Valker Consulting</div>
+</footer>
+
+<!-- ===== BOTONES FLOTANTES ===== -->
+<div class="float-stack">
+  <a class="float-btn ig" href="https://instagram.com/valkerconsulting" target="_blank" rel="noopener" aria-label="Instagram">
+    <span class="float-tooltip">Instagram</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+  </a>
+  <a class="float-btn fb" href="https://facebook.com/valkerconsulting" target="_blank" rel="noopener" aria-label="Facebook">
+    <span class="float-tooltip">Facebook</span>
+    <svg viewBox="0 0 24 24" fill="#fff"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg>
+  </a>
+  <a class="float-btn wa wa-pulse" href="https://wa.me/522223581636" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <span class="float-tooltip">Escríbenos por WhatsApp</span>
+    <svg viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.4-1.36a9.87 9.87 0 0 0 4.64 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.02c-.25.7-1.24 1.28-2.03 1.44-.54.11-1.24.2-3.6-.77-3.02-1.25-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.09 0-1.47.77-2.19 1.04-2.49.27-.3.6-.37.8-.37.2 0 .4 0 .58.01.19.01.44-.07.68.53.25.6.85 2.08.92 2.24.07.15.12.33.02.53-.1.2-.15.33-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.6.17.3.76 1.26 1.64 2.04 1.13.99 2.08 1.3 2.38 1.45.3.15.47.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.72.81 2.01.96.3.15.5.22.57.35.07.13.07.75-.18 1.45z"/></svg>
+  </a>
+</div>
+
+<script>
+  // nav on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 40){ nav.classList.add('scrolled'); }
+    else{ nav.classList.remove('scrolled'); }
+  });
+
+  // mobile menu
+  const navBurger = document.getElementById('navBurger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const menuOverlay = document.getElementById('menuOverlay');
+  function toggleMenu(open){
+    const isOpen = open !== undefined ? open : !mobileMenu.classList.contains('open');
+    navBurger.classList.toggle('open', isOpen);
+    mobileMenu.classList.toggle('open', isOpen);
+    menuOverlay.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  navBurger.addEventListener('click', () => toggleMenu());
+  menuOverlay.addEventListener('click', () => toggleMenu(false));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // stat counters
+  const counters = document.querySelectorAll('.stat .num');
+  const cio = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '';
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now){
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if(progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      cio.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => cio.observe(c));
+
+  // marquee: duplicar contenido para loop infinito perfecto
+  const track = document.getElementById('marqueeTrack');
+  track.innerHTML += track.innerHTML;
+
+  // ===== historias desde la API =====
+  async function loadStories(){
+    const grid = document.getElementById('historiasGrid');
+    try{
+      const res = await fetch('/api/stories');
+      const stories = await res.json();
+
+      if(!stories.length){
+        grid.innerHTML = `
+          <div class="historias-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Aún no hay historias publicadas. Muy pronto compartiremos casos y actualizaciones aquí.
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = stories.map(s => `
+        <div class="story-card">
+          ${s.image ? `<img class="story-thumb" src="${s.image}" alt="${escapeHtml(s.title)}">` : `<div class="story-thumb"></div>`}
+          <div class="story-body">
+            <span class="story-cat">${escapeHtml(s.category || 'General')}</span>
+            <h3>${escapeHtml(s.title)}</h3>
+            <p>${escapeHtml(s.excerpt || '')}</p>
+            <span class="story-date">${new Date(s.createdAt).toLocaleDateString('es-MX', { day:'numeric', month:'long', year:'numeric' })}</span>
+          </div>
+        </div>
+      `).join('');
+    }catch(err){
+      grid.innerHTML = `<div class="historias-empty">No se pudieron cargar las historias en este momento.</div>`;
+    }
+  }
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+  loadStories();
+
+  // ===== agenda / citas =====
+  const SLOTS = ['09:00','10:00','11:00','12:00','13:00','15:00','16:00','17:00'];
+  const dateInput = document.getElementById('apDate');
+  const slotGrid = document.getElementById('slotGrid');
+  const slotHint = document.getElementById('slotHint');
+  const apTime = document.getElementById('apTime');
+  const apForm = document.getElementById('appointmentForm');
+  const apMsg = document.getElementById('apMsg');
+  const apSubmit = document.getElementById('apSubmit');
+
+  // fecha mínima: hoy
+  const todayStr = new Date().toISOString().split('T')[0];
+  dateInput.min = todayStr;
+
+  function renderSlots(taken){
+    apTime.value = '';
+    slotGrid.innerHTML = SLOTS.map(s => `
+      <button type="button" class="slot-btn ${taken.includes(s) ? 'taken' : ''}" data-slot="${s}">${s}</button>
+    `).join('');
+    slotGrid.querySelectorAll('.slot-btn:not(.taken)').forEach(btn => {
+      btn.addEventListener('click', () => {
+        slotGrid.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        apTime.value = btn.dataset.slot;
+      });
+    });
+  }
+
+  async function loadAvailability(date){
+    slotHint.textContent = 'Cargando horarios...';
+    slotGrid.innerHTML = '';
+    try{
+      const day = new Date(date + 'T00:00:00').getDay();
+      if(day === 0 || day === 6){
+        slotHint.textContent = 'Solo agendamos citas de lunes a viernes. Elige otra fecha.';
+        return;
+      }
+      const res = await fetch(`/api/appointments/availability?date=${date}`);
+      const data = await res.json();
+      renderSlots(data.taken || []);
+      slotHint.textContent = 'Toca un horario disponible.';
+    }catch(err){
+      slotHint.textContent = 'No se pudieron cargar los horarios, intenta de nuevo.';
+    }
+  }
+
+  dateInput.addEventListener('change', () => {
+    if(dateInput.value) loadAvailability(dateInput.value);
+  });
+
+  apForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    apMsg.textContent = '';
+    apMsg.className = 'af-msg';
+
+    if(!apTime.value){
+      apMsg.textContent = 'Selecciona un horario disponible.';
+      apMsg.classList.add('error');
+      return;
+    }
+
+    const payload = {
+      name: document.getElementById('apName').value,
+      email: document.getElementById('apEmail').value,
+      phone: document.getElementById('apPhone').value,
+      service: document.getElementById('apService').value,
+      date: dateInput.value,
+      time: apTime.value,
+      message: document.getElementById('apMessage').value
+    };
+
+    apSubmit.disabled = true;
+    apSubmit.textContent = 'Agendando...';
+
+    try{
+      const res = await fetch('/api/appointments', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if(res.ok){
+        const waText = encodeURIComponent(`Hola, agendé una cita en Valker Consulting para el ${payload.date} a las ${payload.time}. Mi nombre es ${payload.name}.`);
+        apMsg.className = 'af-msg success';
+        apMsg.innerHTML = `
+          <span>¡Listo! Tu cita quedó registrada para el ${payload.date} a las ${payload.time}. Te contactaremos para confirmar.</span>
+          <a href="https://wa.me/522223581636?text=${waText}" target="_blank" rel="noopener">Confirmar también por WhatsApp →</a>
+        `;
+        apForm.reset();
+        slotGrid.innerHTML = '';
+        slotHint.textContent = 'Selecciona una fecha para ver horarios disponibles.';
+      } else {
+        apMsg.textContent = data.error || 'No se pudo agendar la cita.';
+        apMsg.classList.add('error');
+        if(dateInput.value) loadAvailability(dateInput.value);
+      }
+    }catch(err){
+      apMsg.textContent = 'No se pudo conectar con el servidor.';
+      apMsg.classList.add('error');
+    }finally{
+      apSubmit.disabled = false;
+      apSubmit.textContent = 'Confirmar cita';
+    }
+  });
+</script>
+
+</body>
+</html>

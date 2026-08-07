@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Valker Consulting</title>
+<link rel="icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#070f20;
+    --navy-900:#0d2140;
+    --navy-800:#132a52;
+    --gold-500:#c9a24a;
+    --gold-400:#e2c37c;
+    --cream:#faf8f3;
+    --ink:#0d1b2e;
+    --ink-soft:#5b667c;
+    --line:#e4dfd2;
+    --danger:#c0483f;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif; background:var(--cream); color:var(--ink);
+    min-height:100vh;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+
+  /* ---- login screen ---- */
+  #loginScreen{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse 800px 600px at 50% 0%, rgba(201,162,74,0.15), transparent 60%), var(--navy-950);
+    padding:20px;
+  }
+  .login-card{
+    width:100%; max-width:380px; background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:40px 34px;
+    text-align:center;
+  }
+  .login-card .logo-chip{
+    background:var(--cream); border-radius:8px; display:inline-flex; padding:10px 14px; margin-bottom:20px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  }
+  .login-card .logo-chip img{ height:44px; }
+  .login-card h1{ font-family:'Cormorant Garamond'; color:#fff; font-size:24px; margin-bottom:6px; }
+  .login-card p{ color:#9fabc4; font-size:13px; margin-bottom:26px; }
+  .login-card input{
+    width:100%; padding:13px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.04); color:#fff; font-size:14px; margin-bottom:14px; outline:none;
+    transition:border-color .2s ease;
+  }
+  .login-card input:focus{ border-color:var(--gold-500); }
+  .login-card button{
+    width:100%; padding:13px 16px; border-radius:8px; border:none; cursor:pointer;
+    background:linear-gradient(120deg, var(--gold-400), var(--gold-500)); color:var(--navy-950);
+    font-weight:800; letter-spacing:0.03em; font-size:13px; text-transform:uppercase;
+    transition:transform .2s ease;
+  }
+  .login-card button:hover{ transform:translateY(-2px); }
+  .login-error{ color:#ff8a80; font-size:12.5px; margin-top:12px; min-height:16px; }
+
+  /* ---- dashboard ---- */
+  #dashboard{ display:none; }
+  .admin-nav{
+    background:var(--navy-950); color:#fff; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+  .admin-nav-left{ display:flex; align-items:center; gap:12px; }
+  .admin-nav .logo-chip{ background:var(--cream); border-radius:6px; padding:5px 8px; display:flex; }
+  .admin-nav .logo-chip img{ height:26px; }
+  .admin-nav-title{ font-family:'Cormorant Garamond'; font-size:18px; }
+  .admin-nav-title span{ display:block; font-size:9.5px; letter-spacing:0.24em; color:var(--gold-400); font-family:'Inter'; font-weight:700; }
+  .admin-nav-right{ display:flex; align-items:center; gap:14px; }
+  .btn-site{ font-size:12.5px; color:#c6cede; border:1px solid rgba(255,255,255,0.2); padding:8px 14px; border-radius:6px; }
+  .btn-site:hover{ border-color:var(--gold-400); color:#fff; }
+  .btn-logout{ font-size:12.5px; color:#ff9d92; cursor:pointer; background:none; border:none; }
+
+  .admin-body{ max-width:1100px; margin:0 auto; padding:40px 24px 80px; }
+  .admin-head{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:32px; }
+  .admin-head h2{ font-family:'Cormorant Garamond'; font-weight:700; font-size:28px; }
+  .admin-head p{ color:var(--ink-soft); font-size:13.5px; margin-top:4px; }
+  .btn-new{
+    background:var(--navy-950); color:#fff; border:none; padding:12px 22px; border-radius:8px;
+    font-size:13px; font-weight:700; letter-spacing:0.02em; cursor:pointer; display:inline-flex; align-items:center; gap:8px;
+    transition:background .2s ease;
+  }
+  .btn-new:hover{ background:var(--navy-800); }
+
+  .stories-table{ display:flex; flex-direction:column; gap:14px; }
+  .story-row{
+    background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+    display:flex; align-items:center; gap:16px;
+  }
+  .story-row img{ width:72px; height:56px; object-fit:cover; border-radius:8px; background:var(--navy-900); flex-shrink:0; }
+  .story-row .no-img{ width:72px; height:56px; border-radius:8px; background:var(--navy-900); flex-shrink:0; }
+  .story-row .info{ flex:1; min-width:0; }
+  .story-row .info h4{ font-size:14.5px; font-weight:700; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .story-row .info .meta{ font-size:12px; color:var(--ink-soft); display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .tag{ background:var(--cream); border:1px solid var(--line); padding:2px 8px; border-radius:999px; font-size:10.5px; text-transform:uppercase; letter-spacing:0.04em; }
+  .tag.draft{ color:#b8862f; border-color:#e6cfa0; background:#fdf6e8; }
+  .tag.pendiente{ color:#b8862f; border-color:#e6cfa0; background:#fdf6e8; }
+  .tag.confirmada{ color:#1c6b3a; border-color:#bfe6cc; background:#eaf7ee; }
+  .tag.cancelada{ color:#c0483f; border-color:#f0c9c5; background:#fdeeed; }
+
+  .appt-row{
+    background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .appt-when{
+    width:78px; flex-shrink:0; text-align:center; background:var(--navy-950); color:#fff; border-radius:10px; padding:8px 4px;
+  }
+  .appt-when .d{ font-family:'Cormorant Garamond'; font-size:20px; font-weight:700; line-height:1; }
+  .appt-when .t{ font-size:11px; color:var(--gold-400); margin-top:2px; }
+  .appt-info{ flex:1; min-width:180px; }
+  .appt-info h4{ font-size:14.5px; font-weight:700; margin-bottom:3px; }
+  .appt-info .meta{ font-size:12px; color:var(--ink-soft); display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .appt-actions{ display:flex; gap:8px; align-items:center; flex-shrink:0; }
+  .appt-actions select{
+    padding:8px 10px; border-radius:8px; border:1px solid var(--line); font-size:12.5px; font-family:inherit; background:#fff;
+  }
+  .row-actions{ display:flex; gap:8px; flex-shrink:0; }
+  .icon-btn{
+    width:34px; height:34px; border-radius:8px; border:1px solid var(--line); background:#fff;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .2s ease, border-color .2s ease;
+  }
+  .icon-btn:hover{ border-color:var(--gold-500); background:var(--cream); }
+  .icon-btn.delete:hover{ border-color:var(--danger); background:#fdeeed; }
+  .icon-btn svg{ width:16px; height:16px; stroke:var(--ink); }
+  .icon-btn.delete svg{ stroke:var(--danger); }
+
+  .empty-state{
+    text-align:center; padding:60px 20px; color:var(--ink-soft); border:1px dashed var(--line); border-radius:12px;
+  }
+
+  /* modal */
+  .modal-backdrop{
+    display:none; position:fixed; inset:0; background:rgba(7,15,32,0.6); backdrop-filter:blur(4px);
+    z-index:100; align-items:flex-start; justify-content:center; padding:40px 16px; overflow-y:auto;
+  }
+  .modal-backdrop.open{ display:flex; }
+  .modal{
+    background:#fff; border-radius:16px; width:100%; max-width:560px; padding:32px; margin-bottom:40px;
+  }
+  .modal h3{ font-family:'Cormorant Garamond'; font-size:22px; margin-bottom:20px; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-soft); margin-bottom:6px; }
+  .field input[type=text], .field textarea, .field select{
+    width:100%; padding:11px 14px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-family:inherit; outline:none;
+    transition:border-color .2s ease;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{ border-color:var(--gold-500); }
+  .field textarea{ resize:vertical; min-height:70px; }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .file-drop{
+    border:1.5px dashed var(--line); border-radius:10px; padding:18px; text-align:center; cursor:pointer; font-size:13px; color:var(--ink-soft);
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .file-drop:hover{ border-color:var(--gold-500); background:var(--cream); }
+  .file-drop img{ max-height:120px; margin:0 auto 10px; border-radius:8px; }
+  .modal-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:22px; }
+  .btn-cancel{ padding:11px 20px; border-radius:8px; border:1px solid var(--line); background:#fff; font-size:13px; font-weight:600; cursor:pointer; }
+  .btn-save{ padding:11px 24px; border-radius:8px; border:none; background:var(--navy-950); color:#fff; font-size:13px; font-weight:700; cursor:pointer; }
+  .btn-save:hover{ background:var(--navy-800); }
+  .form-msg{ font-size:12.5px; margin-top:10px; min-height:16px; }
+  .form-msg.error{ color:var(--danger); }
+  .form-msg.success{ color:#2f8a4a; }
+
+  .checkbox-field{ display:flex; align-items:center; gap:8px; font-size:13px; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:640px){
+    .login-card{ padding:32px 24px; }
+
+    .admin-nav{ padding:14px 18px; }
+    .admin-nav-title{ font-size:16px; }
+    .btn-site{ display:none; }
+
+    .admin-body{ padding:28px 16px 60px; }
+    .admin-head{ flex-direction:column; align-items:flex-start; }
+    .admin-head h2{ font-size:23px; }
+    .btn-new{ width:100%; justify-content:center; }
+
+    .story-row{ flex-wrap:wrap; padding:14px; gap:12px; }
+    .story-row img, .story-row .no-img{ width:56px; height:44px; }
+    .story-row .info{ flex-basis:calc(100% - 68px); }
+    .row-actions{ flex-basis:100%; justify-content:flex-end; }
+
+    .modal-backdrop{ padding:0; align-items:stretch; }
+    .modal{ max-width:none; width:100%; min-height:100vh; border-radius:0; margin-bottom:0; padding:24px 18px 100px; }
+    .field-row{ grid-template-columns:1fr; }
+    .modal-actions{ position:fixed; bottom:0; left:0; right:0; background:#fff; padding:14px 18px; margin:0; box-shadow:0 -6px 20px rgba(0,0,0,0.08); }
+    .modal-actions .btn-cancel, .modal-actions .btn-save{ flex:1; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="logo-chip"><img src="/logo.png" alt="Valker Consulting"></div>
+    <h1>Panel de administración</h1>
+    <p>Valker Consulting — acceso restringido</p>
+    <form id="loginForm">
+      <input type="password" id="passwordInput" placeholder="Contraseña" autocomplete="current-password" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboard">
+  <div class="admin-nav">
+    <div class="admin-nav-left">
+      <div class="logo-chip"><img src="/logo.png" alt="Valker Consulting"></div>
+      <div class="admin-nav-title">Historias<span>VALKER CONSULTING</span></div>
+    </div>
+    <div class="admin-nav-right">
+      <a href="/" class="btn-site" target="_blank">Ver sitio ↗</a>
+      <button class="btn-logout" id="logoutBtn">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <div class="admin-head">
+      <div>
+        <h2>Tus historias</h2>
+        <p>Sube actualizaciones, casos de éxito y noticias que aparecerán en la página principal.</p>
+      </div>
+      <button class="btn-new" id="newStoryBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Nueva historia
+      </button>
+    </div>
+
+    <div class="stories-table" id="storiesTable">
+      <!-- filas generadas por JS -->
+    </div>
+
+    <div class="admin-head" style="margin-top:56px;">
+      <div>
+        <h2>Citas agendadas</h2>
+        <p>Solicitudes de cita hechas desde el sitio público.</p>
+      </div>
+    </div>
+    <div class="stories-table" id="appointmentsTable">
+      <!-- filas generadas por JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: crear/editar historia ===== -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <h3 id="modalTitle">Nueva historia</h3>
+    <form id="storyForm">
+      <input type="hidden" id="storyId">
+      <div class="field">
+        <label>Título</label>
+        <input type="text" id="titleInput" placeholder="Ej. Abrimos oficina en Miami" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Categoría</label>
+          <select id="categoryInput">
+            <option>Actualización</option>
+            <option>Caso de éxito</option>
+            <option>Softlanding USA</option>
+            <option>Branding</option>
+            <option>Infraestructura TI</option>
+            <option>General</option>
+          </select>
+        </div>
+        <div class="field checkbox-field" style="align-items:flex-end; padding-bottom:10px;">
+          <input type="checkbox" id="publishedInput" checked style="width:auto;">
+          <label style="margin:0;" for="publishedInput">Publicar en el sitio</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Resumen corto</label>
+        <textarea id="excerptInput" placeholder="Una o dos frases que aparecen en la tarjeta..."></textarea>
+      </div>
+      <div class="field">
+        <label>Contenido completo (opcional)</label>
+        <textarea id="contentInput" placeholder="Detalle completo de la historia..." style="min-height:100px;"></textarea>
+      </div>
+      <div class="field">
+        <label>Imagen</label>
+        <div class="file-drop" id="fileDrop">
+          <div id="fileDropContent">Haz clic para elegir una imagen (JPG, PNG, WEBP — máx 6MB)</div>
+          <input type="file" id="imageInput" accept="image/*" style="display:none;">
+        </div>
+      </div>
+      <div class="form-msg" id="formMsg"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" id="cancelBtn">Cancelar</button>
+        <button type="submit" class="btn-save" id="saveBtn">Guardar historia</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const loginScreen = document.getElementById('loginScreen');
+  const dashboard = document.getElementById('dashboard');
+  const loginForm = document.getElementById('loginForm');
+  const loginError = document.getElementById('loginError');
+
+  async function checkSession(){
+    const res = await fetch('/api/admin/session');
+    const data = await res.json();
+    if(data.isAdmin){ showDashboard(); } else { showLogin(); }
+  }
+
+  function showLogin(){ loginScreen.style.display='flex'; dashboard.style.display='none'; }
+  function showDashboard(){ loginScreen.style.display='none'; dashboard.style.display='block'; loadStories(); loadAppointments(); }
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    loginError.textContent = '';
+    const password = document.getElementById('passwordInput').value;
+    try{
+      const res = await fetch('/api/admin/login', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password })
+      });
+      const data = await res.json();
+      if(res.ok){ showDashboard(); } else { loginError.textContent = data.error || 'Error al iniciar sesión.'; }
+    }catch(err){ loginError.textContent = 'No se pudo conectar con el servidor.'; }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await fetch('/api/admin/logout', { method:'POST' });
+    showLogin();
+  });
+
+  // ---- listado ----
+  async function loadStories(){
+    const table = document.getElementById('storiesTable');
+    table.innerHTML = '<div class="empty-state">Cargando...</div>';
+    try{
+      const res = await fetch('/api/admin/stories');
+      if(res.status === 401){ showLogin(); return; }
+      const stories = await res.json();
+
+      if(!stories.length){
+        table.innerHTML = '<div class="empty-state">Todavía no has subido ninguna historia. Usa "Nueva historia" para publicar la primera.</div>';
+        return;
+      }
+
+      table.innerHTML = stories.map(s => `
+        <div class="story-row" data-id="${s.id}">
+          ${s.image ? `<img src="${s.image}" alt="">` : `<div class="no-img"></div>`}
+          <div class="info">
+            <h4>${escapeHtml(s.title)}</h4>
+            <div class="meta">
+              <span class="tag">${escapeHtml(s.category || 'General')}</span>
+              ${s.published === false ? '<span class="tag draft">Borrador</span>' : ''}
+              <span>${new Date(s.createdAt).toLocaleDateString('es-MX')}</span>
+            </div>
+          </div>
+          <div class="row-actions">
+            <button class="icon-btn edit-btn" title="Editar">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </button>
+            <button class="icon-btn delete delete-btn" title="Eliminar">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      table.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.closest('.story-row').dataset.id;
+          const story = stories.find(s => s.id === id);
+          openModal(story);
+        });
+      });
+      table.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const id = e.target.closest('.story-row').dataset.id;
+          if(!confirm('¿Eliminar esta historia? Esta acción no se puede deshacer.')) return;
+          const res = await fetch(`/api/admin/stories/${id}`, { method:'DELETE' });
+          if(res.ok){ loadStories(); }
+        });
+      });
+
+    }catch(err){
+      table.innerHTML = '<div class="empty-state">Error al cargar las historias.</div>';
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // ---- modal crear/editar ----
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const storyForm = document.getElementById('storyForm');
+  const modalTitle = document.getElementById('modalTitle');
+  const formMsg = document.getElementById('formMsg');
+  const fileDrop = document.getElementById('fileDrop');
+  const fileDropContent = document.getElementById('fileDropContent');
+  const imageInput = document.getElementById('imageInput');
+  let currentImagePreview = null;
+
+  document.getElementById('newStoryBtn').addEventListener('click', () => openModal(null));
+  document.getElementById('cancelBtn').addEventListener('click', closeModal);
+  modalBackdrop.addEventListener('click', (e) => { if(e.target === modalBackdrop) closeModal(); });
+  fileDrop.addEventListener('click', () => imageInput.click());
+  imageInput.addEventListener('change', () => {
+    const file = imageInput.files[0];
+    if(!file) return;
+    const url = URL.createObjectURL(file);
+    fileDropContent.innerHTML = `<img src="${url}"><div>${file.name}</div>`;
+  });
+
+  function openModal(story){
+    formMsg.textContent = '';
+    storyForm.reset();
+    fileDropContent.innerHTML = 'Haz clic para elegir una imagen (JPG, PNG, WEBP — máx 6MB)';
+    document.getElementById('storyId').value = '';
+
+    if(story){
+      modalTitle.textContent = 'Editar historia';
+      document.getElementById('storyId').value = story.id;
+      document.getElementById('titleInput').value = story.title;
+      document.getElementById('categoryInput').value = story.category || 'General';
+      document.getElementById('excerptInput').value = story.excerpt || '';
+      document.getElementById('contentInput').value = story.content || '';
+      document.getElementById('publishedInput').checked = story.published !== false;
+      if(story.image){ fileDropContent.innerHTML = `<img src="${story.image}"><div>Imagen actual (elige otra para reemplazarla)</div>`; }
+    } else {
+      modalTitle.textContent = 'Nueva historia';
+    }
+    modalBackdrop.classList.add('open');
+  }
+  function closeModal(){ modalBackdrop.classList.remove('open'); }
+
+  storyForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formMsg.textContent = '';
+    formMsg.className = 'form-msg';
+
+    const id = document.getElementById('storyId').value;
+    const fd = new FormData();
+    fd.append('title', document.getElementById('titleInput').value);
+    fd.append('category', document.getElementById('categoryInput').value);
+    fd.append('excerpt', document.getElementById('excerptInput').value);
+    fd.append('content', document.getElementById('contentInput').value);
+    fd.append('published', document.getElementById('publishedInput').checked ? 'true' : 'false');
+    if(imageInput.files[0]) fd.append('image', imageInput.files[0]);
+
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.disabled = true; saveBtn.textContent = 'Guardando...';
+
+    try{
+      const url = id ? `/api/admin/stories/${id}` : '/api/admin/stories';
+      const method = id ? 'PUT' : 'POST';
+      const res = await fetch(url, { method, body: fd });
+      const data = await res.json();
+
+      if(res.ok){
+        formMsg.textContent = 'Historia guardada correctamente.';
+        formMsg.classList.add('success');
+        setTimeout(() => { closeModal(); loadStories(); }, 500);
+      } else {
+        formMsg.textContent = data.error || 'Ocurrió un error al guardar.';
+        formMsg.classList.add('error');
+      }
+    }catch(err){
+      formMsg.textContent = 'No se pudo conectar con el servidor.';
+      formMsg.classList.add('error');
+    }finally{
+      saveBtn.disabled = false; saveBtn.textContent = 'Guardar historia';
+    }
+  });
+
+  checkSession();
+
+  // ===== citas agendadas =====
+  async function loadAppointments(){
+    const table = document.getElementById('appointmentsTable');
+    table.innerHTML = '<div class="empty-state">Cargando...</div>';
+    try{
+      const res = await fetch('/api/admin/appointments');
+      if(res.status === 401){ showLogin(); return; }
+      const list = await res.json();
+
+      if(!list.length){
+        table.innerHTML = '<div class="empty-state">Todavía no hay citas agendadas.</div>';
+        return;
+      }
+
+      table.innerHTML = list.map(a => {
+        const dt = new Date(`${a.date}T00:00:00`);
+        const dayNum = dt.getDate();
+        const monthShort = dt.toLocaleDateString('es-MX', { month:'short' }).replace('.','');
+        return `
+        <div class="appt-row" data-id="${a.id}">
+          <div class="appt-when">
+            <div class="d">${dayNum}</div>
+            <div class="t">${monthShort} · ${a.time}</div>
+          </div>
+          <div class="appt-info">
+            <h4>${escapeHtml(a.name)}</h4>
+            <div class="meta">
+              <span class="tag ${a.status}">${a.status}</span>
+              <span>${escapeHtml(a.service || 'Consulta general')}</span>
+              <span>${escapeHtml(a.email)}</span>
+              ${a.phone ? `<span>${escapeHtml(a.phone)}</span>` : ''}
+            </div>
+          </div>
+          <div class="appt-actions">
+            <select class="status-select">
+              <option value="pendiente" ${a.status==='pendiente'?'selected':''}>Pendiente</option>
+              <option value="confirmada" ${a.status==='confirmada'?'selected':''}>Confirmada</option>
+              <option value="cancelada" ${a.status==='cancelada'?'selected':''}>Cancelada</option>
+            </select>
+            <button class="icon-btn delete appt-delete-btn" title="Eliminar">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
+          </div>
+        </div>`;
+      }).join('');
+
+      table.querySelectorAll('.status-select').forEach(sel => {
+        sel.addEventListener('change', async (e) => {
+          const id = e.target.closest('.appt-row').dataset.id;
+          await fetch(`/api/admin/appointments/${id}`, {
+            method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ status: e.target.value })
+          });
+          loadAppointments();
+        });
+      });
+      table.querySelectorAll('.appt-delete-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const id = e.target.closest('.appt-row').dataset.id;
+          if(!confirm('¿Eliminar esta cita?')) return;
+          const res = await fetch(`/api/admin/appointments/${id}`, { method:'DELETE' });
+          if(res.ok){ loadAppointments(); }
+        });
+      });
+
+    }catch(err){
+      table.innerHTML = '<div class="empty-state">Error al cargar las citas.</div>';
+    }
+  }
+</script>
+
+</body>
+</html>
